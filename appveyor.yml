@@ -1,0 +1,26 @@
+# version format
+version: 4.0.2-{branch}-build{build}
+
+os: Visual Studio 2017
+
+clone_folder: c:\projects\gtsam
+
+platform: x64
+configuration: Release
+
+environment:
+  CTEST_OUTPUT_ON_FAILURE: 1
+  BOOST_ROOT: C:/Libraries/boost_1_67_0
+
+build_script:
+  - cd c:\projects\gtsam\build
+  # Disable examples to avoid AppVeyor timeout
+  - cmake . -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF
+  - cmake --build . 
+  - cmake --build . --target check
+
+before_build:
+  - cd c:\projects\gtsam
+  - mkdir build
+  - cd build
+  - cmake -G "Visual Studio 15 2017 Win64"  ..
